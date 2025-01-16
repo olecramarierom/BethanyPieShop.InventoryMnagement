@@ -1,4 +1,5 @@
-﻿using BethanyPieShop.InventoryManagement.Domain.Contracts;
+﻿using BethanyPieShop.InventoryManagement.db;
+using BethanyPieShop.InventoryManagement.Domain.Contracts;
 using BethanyPieShop.InventoryManagement.Domain.ProductManagement;
 using BethanyPieShop.InventoryMnagement.Domain.General;
 using BethanyPieShop.InventoryMnagement.Domain.OrderManagement;
@@ -10,6 +11,7 @@ namespace BethanyPieShop.InventoryMnagement
     {
         private static List<Product> inventory = new();
         private static List<Order> orders = new();
+        
 
         internal static void InitializeStock()
         {
@@ -407,31 +409,36 @@ namespace BethanyPieShop.InventoryMnagement
                 unitType = (UnitType)Enum.Parse(typeof(UnitType), Console.ReadLine() ?? "1");
             }
 
-            Console.WriteLine("Enter the maximum number of items in stock for this product: ");
-            int maxInStock = int.Parse(Console.ReadLine() ?? "0");
+            Console.WriteLine("Enter the number of items in stock for this product: ");
+            int itemInStock = int.Parse(Console.ReadLine() ?? "0");
 
             int newId = inventory.Max(p => p.Id) + 1;
 
             switch (productType)
             {
                 case "1":
-                    newProduct = new RegularProduct(newId, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, maxInStock);
+                    newProduct = new RegularProduct(newId, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock);
                     break;
                 case "2":
-                    newProduct = new BulkProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, maxInStock);
+                    newProduct = new BulkProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock);
                     break;
                 case "3":
-                    newProduct = new FreshProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, maxInStock);
+                    newProduct = new FreshProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock);
                     break;
                 case "4":
                     Console.WriteLine("Enter the number of items per box: ");
                     int numberInBox = int.Parse(Console.ReadLine() ?? string.Empty);
 
-                    newProduct = new BoxedProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, maxInStock, numberInBox);
+                    newProduct = new BoxedProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, itemInStock, numberInBox);
                     break;
             }
             if (newProduct != null)
             {
+                var connectionString = "Server=localhost,1433;Database=BethanyPieShop;User Id=SA;Password=YourPassword123;Encrypt=False;";
+                var databaseConnection = new DatabaseConnection(connectionString);
+                var repository = new ProductDbRepository(databaseConnection);
+                repository.AddProduct(newProduct);
+
                 inventory.Add(newProduct);
             }
         }

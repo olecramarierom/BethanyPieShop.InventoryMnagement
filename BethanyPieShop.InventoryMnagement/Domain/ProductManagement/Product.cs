@@ -58,6 +58,12 @@ namespace BethanyPieShop.InventoryMnagement.Domain.ProductManagement
 
         public Price Price { get; set; }
 
+        public int MaxItemInStock
+        {
+            get { return maxItemsInStock; }
+            set { maxItemsInStock = value; }
+        }
+
         #endregion
 
         #region Constructors
@@ -71,7 +77,7 @@ namespace BethanyPieShop.InventoryMnagement.Domain.ProductManagement
             Name = name;
         }
 
-        public Product(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock)
+        public Product(int id, string name, string? description, Price price, UnitType unitType, int amountInStock)
         {
             Id = id;
             Name = name;
@@ -79,7 +85,7 @@ namespace BethanyPieShop.InventoryMnagement.Domain.ProductManagement
             Price = price;
             UnitType = unitType;
 
-            maxItemsInStock = maxAmountInStock;
+            AmountInStock = amountInStock;
 
             UpdateLowStock();
         }
