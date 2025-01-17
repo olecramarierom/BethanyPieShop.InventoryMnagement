@@ -12,10 +12,12 @@ namespace BethanyPieShop.InventoryManagement.db
     {
 
         private readonly DatabaseConnection _connection;
+        private readonly string connectionString = "Server=localhost,1433;Database=BethanyPieShop;User Id=SA;Password=YourPassword123;Encrypt=False;";
 
-        public ProductDbRepository(DatabaseConnection connection)
+
+        public ProductDbRepository()
         {
-            _connection = connection;
+            _connection = new DatabaseConnection(connectionString);
         }
 
         public void AddProduct(Product entity)

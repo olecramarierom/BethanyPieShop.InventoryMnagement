@@ -11,6 +11,7 @@ namespace BethanyPieShop.InventoryMnagement
     {
         private static List<Product> inventory = new();
         private static List<Order> orders = new();
+        private static ProductDbRepository productDbRepository = new();
         
 
         internal static void InitializeStock()
@@ -434,12 +435,8 @@ namespace BethanyPieShop.InventoryMnagement
             }
             if (newProduct != null)
             {
-                var connectionString = "Server=localhost,1433;Database=BethanyPieShop;User Id=SA;Password=YourPassword123;Encrypt=False;";
-                var databaseConnection = new DatabaseConnection(connectionString);
-                var repository = new ProductDbRepository(databaseConnection);
-                repository.AddProduct(newProduct);
-
-                inventory.Add(newProduct);
+                productDbRepository.AddProduct(newProduct);
+                //inventory.Add(newProduct);
             }
         }
 
