@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 
 namespace BethanyPieShop.InventoryManagement.db
 {
-    public class ProductDbRepository: IRepository<Product>
+    public class ProductDbRepository : IRepository<Product>
     {
 
         private readonly DatabaseConnection _connection;
@@ -17,25 +17,53 @@ namespace BethanyPieShop.InventoryManagement.db
 
         public void AddProduct(Product entity)
         {
-            var query = "INSERT INTO Product (Name, Description, AmountInStock, Price, CurrencyID, UnitTypeID, ProductTypeID, MaxAmountInStock) " +
-                "        VALUES (@Name, @Description, @AmountInStock, @Price, @CurrencyID, @UnitTypeID, @ProductTypeID, @MaxAmountInStock)";
-
-            using (var connection = _connection.GetConnection()) 
-            using (var command = new SqlCommand(query, connection))
+            try
             {
-                command.Parameters.AddWithValue("@Name", entity.Name);
-                command.Parameters.AddWithValue("@Description", entity.Description);
-                command.Parameters.AddWithValue("@AmountInStock", entity.AmountInStock);
-                command.Parameters.AddWithValue("@Price", entity.Price.ItemPrice);
-                command.Parameters.AddWithValue("@CurrencyID", (int)entity.Price.Currency);
-                command.Parameters.AddWithValue("@UnitTypeID", (int)entity.UnitType + 1);
-                command.Parameters.AddWithValue("@ProductTypeID", entity.ProductType);
-                command.Parameters.AddWithValue("@MaxAmountInStock", entity.MaxItemInStock);
+                var query = "INSERT INTO Product (Name, Description, AmountInStock, Price, CurrencyID, UnitTypeID, ProductTypeID, MaxAmountInStock) " +
+                    "        VALUES (@Name, @Description, @AmountInStock, @Price, @CurrencyID, @UnitTypeID, @ProductTypeID, @MaxAmountInStock)";
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                using (var connection = _connection.GetConnection())
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", entity.Name);
+                    command.Parameters.AddWithValue("@Description", entity.Description);
+                    command.Parameters.AddWithValue("@AmountInStock", entity.AmountInStock);
+                    command.Parameters.AddWithValue("@Price", entity.Price.ItemPrice);
+                    command.Parameters.AddWithValue("@CurrencyID", (int)entity.Price.Currency);
+                    command.Parameters.AddWithValue("@UnitTypeID", (int)entity.UnitType + 1);
+                    command.Parameters.AddWithValue("@ProductTypeID", entity.ProductType);
+                    command.Parameters.AddWithValue("@MaxAmountInStock", entity.MaxItemInStock);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
             }
-
+            catch (SqlException ex)
+            {
+                // Handle SQL Server-specific errors
+                Console.WriteLine($"SQL Error: {ex.Message}");
+            }
+            catch (TimeoutException ex)
+            {
+                // Handle timeout
+                Console.WriteLine($"Timeout Error: {ex.Message}");
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Handle invalid operations
+                Console.WriteLine($"Invalid Operation: {ex.Message}");
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle argument errors
+                Console.WriteLine($"Argument Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Handle all other exceptions
+                Console.WriteLine($"Unexpected Error: {ex.Message}");
+            }
         }
     }
 }
