@@ -12,7 +12,7 @@ namespace BethanyPieShop.InventoryMnagement
         private static List<Product> inventory = new();
         private static List<Order> orders = new();
         private static ProductDbRepository productDbRepository = new();
-        
+
 
         internal static void InitializeStock()
         {
@@ -106,9 +106,9 @@ namespace BethanyPieShop.InventoryMnagement
 
             List<ISavable> savables = new List<ISavable>();
 
-            foreach(var item in inventory)
+            foreach (var item in inventory)
             {
-                if(item is ISavable)
+                if (item is ISavable)
                 {
                     savables.Add(item as ISavable);
                 }
@@ -381,11 +381,22 @@ namespace BethanyPieShop.InventoryMnagement
             Console.WriteLine("1. Regular product\n2. Bulk product\n3. Fresk product\n4. Boxed product");
             Console.WriteLine("Your selection: ");
 
-            var productType = Console.ReadLine();
-            if (productType == "1" && productType == "2" && productType == "3" && productType == "4")
+            int productType;
+
+            if (!int.TryParse(Console.ReadLine(), out productType))
             {
+
                 Console.WriteLine("Invalid selection");
                 return;
+
+            }
+
+            if (!IsExistentProductType(productType))
+            {
+
+                Console.WriteLine("Invalid Product");
+                return;
+
             }
 
             Product? newProduct = null;
@@ -403,7 +414,7 @@ namespace BethanyPieShop.InventoryMnagement
             Console.WriteLine("Enter the description: ");
             string description = Console.ReadLine() ?? string.Empty;
 
-            if (productType == "1")
+            if (productType == 1)
             {
                 ShowAllUnitTypes();
                 Console.WriteLine("Select the unit type: ");
@@ -420,16 +431,16 @@ namespace BethanyPieShop.InventoryMnagement
 
             switch (productType)
             {
-                case "1":
+                case 1:
                     newProduct = new RegularProduct(newId, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
-                case "2":
+                case 2:
                     newProduct = new BulkProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
-                case "3":
+                case 3:
                     newProduct = new FreshProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
-                case "4":
+                case 4:
                     Console.WriteLine("Enter the number of items per box: ");
                     int numberInBox = int.Parse(Console.ReadLine() ?? string.Empty);
 
@@ -441,6 +452,14 @@ namespace BethanyPieShop.InventoryMnagement
                 productDbRepository.AddProduct(newProduct);
                 //inventory.Add(newProduct);
             }
+        }
+
+        private static bool IsExistentProductType(int productType)
+        {
+            if(productType >= 1 && productType <= 4) 
+                return true;
+
+            return false;
         }
 
         private static void ShowAllUnitTypes()
