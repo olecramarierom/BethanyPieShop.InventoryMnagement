@@ -19,6 +19,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
             }
         }
 
+        private const int boxedProductType = 4;
+
         #endregion
 
         #region Contructor
@@ -26,9 +28,10 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
                             string name,
                             string? description,
                             Price price,
-                            int maxAmountInStock,
-                            int amountPerBox)
-                            : base(id, name, description, price, UnitType.PerBox, maxAmountInStock)
+                            int amountInStock,
+                            int amountPerBox,
+                            int maxAmountInStock)
+                            : base(id, name, description, price, UnitType.PerBox, amountInStock, maxAmountInStock, boxedProductType)
         {
             AmountPerBox = amountPerBox;
         }
@@ -126,7 +129,7 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
 
         public override object Clone()
         {
-            return new BoxedProduct(0, this.Name, this.Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = this.Price.Currency }, this.maxItemsInStock, this.amountPerBox);
+            return new BoxedProduct(0, this.Name, this.Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = this.Price.Currency }, this.maxItemsInStock, this.amountPerBox, this.MaxItemInStock);
         }
 
         #endregion

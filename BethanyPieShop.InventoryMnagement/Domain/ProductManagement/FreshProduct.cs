@@ -12,6 +12,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
         public DateTime ExpiryDateTime { get; set; }
         public string? StorageInstructions { get; set; }
 
+        private const int freshProductType = 3;
+
         #endregion
 
         #region Constructor
@@ -20,8 +22,9 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
                             string? description,
                             Price price,
                             UnitType unitType,
+                            int amountInStock,
                             int maxAmountInStock)
-                            : base(id, name, description, price, unitType, maxAmountInStock)
+                            : base(id, name, description, price, unitType, amountInStock, maxAmountInStock, freshProductType)
         {
         }
         #endregion
@@ -56,7 +59,7 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
 
         public override object Clone()
         {
-            return new FreshProduct(0, Name, Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = this.Price.Currency }, this.UnitType, this.maxItemsInStock);
+            return new FreshProduct(0, Name, Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = this.Price.Currency }, this.UnitType, this.AmountInStock, this.MaxItemInStock);
         }
 
         #endregion

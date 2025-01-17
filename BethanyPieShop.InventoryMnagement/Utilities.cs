@@ -413,24 +413,27 @@ namespace BethanyPieShop.InventoryMnagement
             Console.WriteLine("Enter the number of items in stock for this product: ");
             int itemInStock = int.Parse(Console.ReadLine() ?? "0");
 
+            Console.WriteLine("Enter the namber as the Max amount for the product: ");
+            int maxAmountInStock = int.Parse(Console.ReadLine() ?? "0");
+
             int newId = inventory.Max(p => p.Id) + 1;
 
             switch (productType)
             {
                 case "1":
-                    newProduct = new RegularProduct(newId, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock);
+                    newProduct = new RegularProduct(newId, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
                 case "2":
-                    newProduct = new BulkProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock);
+                    newProduct = new BulkProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
                 case "3":
-                    newProduct = new FreshProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock);
+                    newProduct = new FreshProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
                 case "4":
                     Console.WriteLine("Enter the number of items per box: ");
                     int numberInBox = int.Parse(Console.ReadLine() ?? string.Empty);
 
-                    newProduct = new BoxedProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, itemInStock, numberInBox);
+                    newProduct = new BoxedProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, itemInStock, numberInBox, maxAmountInStock);
                     break;
             }
             if (newProduct != null)

@@ -9,8 +9,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
         public FreshBoxedProduct(int id, 
                                 string name, 
                                 string? description, 
-                                Price price, int maxAmountInStock, int amountPerBox) 
-                                : base(id, name, description, price, maxAmountInStock, amountPerBox)
+                                Price price, int amounInStock, int amountPerBox, int maxAmountInStock) 
+                                : base(id, name, description, price, amounInStock, amountPerBox, maxAmountInStock)
         {
         }
         #endregion

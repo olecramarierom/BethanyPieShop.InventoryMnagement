@@ -6,14 +6,17 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
 {
     public class BulkProduct : Product, ISavable
     {
-        public BulkProduct(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock) : base(id, name, description, price, unitType, maxAmountInStock)
+        private const int bulkProductType = 2; 
+
+        public BulkProduct(int id, string name, string? description, Price price, UnitType unitType, int amountInStock, int maxAmountInStock) 
+                           : base(id, name, description, price, unitType, amountInStock, maxAmountInStock, bulkProductType)
         {
 
         }
 
         public override object Clone()
         {
-            return new BulkProduct(0, this.Name, this.Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = Price.Currency }, this.UnitType, this.maxItemsInStock);
+            return new BulkProduct(0, this.Name, this.Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = Price.Currency }, this.UnitType, this.AmountInStock ,this.maxItemsInStock);
         }
 
         public string ConvertToStringForSaving()

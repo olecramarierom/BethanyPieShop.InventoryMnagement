@@ -52,11 +52,11 @@ namespace BethanyPieShop.InventoryMnagement
                     string name = productSplits[1];
                     string descreption = productSplits[2];
 
-                    success = int.TryParse(productSplits[3], out int maxItemInStock);
+                    success = int.TryParse(productSplits[3], out int amountInStock);
 
                     if (!success)
                     {
-                        maxItemInStock = 100;
+                        amountInStock = 100;
                     }
 
                     success = int.TryParse(productSplits[4], out int itemPrice);
@@ -93,19 +93,19 @@ namespace BethanyPieShop.InventoryMnagement
                                 amountPerBox = 1;
                             }
 
-                            product = new BoxedProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency}, maxItemInStock, amountPerBox);
+                            product = new BoxedProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency}, amountInStock, amountPerBox, 0);
                             break;
 
                         case "2":
-                            product = new FreshProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency}, unitType, maxItemInStock);
+                            product = new FreshProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency}, unitType, amountInStock, 0);
                             break;
 
                         case "3":
-                            product = new BulkProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency }, unitType, maxItemInStock);
+                            product = new BulkProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency }, unitType, amountInStock, 0);
                             break;
                         
                         case "4":
-                            product = new RegularProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency }, unitType, maxItemInStock);
+                            product = new RegularProduct(productId, name, descreption, new Price() { ItemPrice = itemPrice, Currency = currency }, unitType, amountInStock, 0);
                             break;
 
                     }
