@@ -4,6 +4,7 @@ using BethanyPieShop.InventoryManagement.Domain.ProductManagement;
 using BethanyPieShop.InventoryMnagement.Domain.General;
 using BethanyPieShop.InventoryMnagement.Domain.OrderManagement;
 using BethanyPieShop.InventoryMnagement.Domain.ProductManagement;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BethanyPieShop.InventoryMnagement
 {
@@ -74,7 +75,7 @@ namespace BethanyPieShop.InventoryMnagement
             Console.WriteLine("4: Save all data");
             Console.WriteLine("0: Close application");
 
-            Console.Write("Your selection");
+            Console.Write("Your selection: ");
 
             string? userSelection = Console.ReadLine();
 
@@ -427,12 +428,17 @@ namespace BethanyPieShop.InventoryMnagement
             Console.WriteLine("Enter the namber as the Max amount for the product: ");
             int maxAmountInStock = int.Parse(Console.ReadLine() ?? "0");
 
-            int newId = inventory.Max(p => p.Id) + 1;
+            var newId = 0;
+
+            if (!inventory.IsNullOrEmpty())
+            {
+                newId = inventory.Max(p => p.Id) + 1;
+            }
 
             switch (productType)
             {
                 case 1:
-                    newProduct = new RegularProduct(newId, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
+                    newProduct = new RegularProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
                     break;
                 case 2:
                     newProduct = new BulkProduct(newId++, name, description, new Price() { ItemPrice = price, Currency = currency }, unitType, itemInStock, maxAmountInStock);
@@ -538,15 +544,16 @@ namespace BethanyPieShop.InventoryMnagement
             string? userSelection = String.Empty;
 
             Console.WriteLine("Enter de ID of the product");
-            string? selectedProductId = Console.ReadLine();
+            int selectedProductId;
 
-            if (selectedProductId != null)
+            if (int.TryParse(Console.ReadLine(), out selectedProductId))
             {
 
-                Product? selectedProduct = inventory.Where(p => p.Id == int.Parse(selectedProductId)).FirstOrDefault();
+                Product? selectedProduct =  productDbRepository.GetProductById(selectedProductId);// inventory.Where(p => p.Id == int.Parse(selectedProductId)).FirstOrDefault();
 
                 if (selectedProduct != null)
                 {
+                    Console.Clear();
 
                     Console.WriteLine(selectedProduct.DisplayDetailsFull());
 
@@ -567,6 +574,14 @@ namespace BethanyPieShop.InventoryMnagement
                         Console.ReadLine();
                     }
                 }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Product not found.");
+                    Console.WriteLine("Press enter to continue.");
+                    Console.ReadLine();
+                    Console.ResetColor();
+                }
             }
             else
             {
@@ -578,7 +593,7 @@ namespace BethanyPieShop.InventoryMnagement
         {
             inventory.Clear();
 
-            inventory = (List<Product>)productDbRepository.GetAllProducts();
+            inventory = productDbRepository.GetAllProducts();
 
             foreach (var product in inventory)
             {

@@ -9,6 +9,8 @@ namespace BethanyPieShop.InventoryManagement.db
     public interface IRepository<T>
     {
         void AddProduct(T entity);
-        IList<T> GetAllProducts();
+        List<T> GetAllProducts();
+        T GetProductById(int id);
+
     }
 }
