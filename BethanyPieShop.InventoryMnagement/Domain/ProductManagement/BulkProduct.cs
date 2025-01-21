@@ -14,6 +14,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
 
         }
 
+        public BulkProduct(Price price) : base(price) { }
+
         public override object Clone()
         {
             return new BulkProduct(0, this.Name, this.Description, new Price() { ItemPrice = this.Price.ItemPrice, Currency = Price.Currency }, this.UnitType, this.AmountInStock ,this.maxItemsInStock);

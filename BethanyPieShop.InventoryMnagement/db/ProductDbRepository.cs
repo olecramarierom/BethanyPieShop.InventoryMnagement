@@ -1,5 +1,8 @@
-﻿using BethanyPieShop.InventoryMnagement.Domain.ProductManagement;
+﻿using BethanyPieShop.InventoryManagement.Domain.ProductManagement;
+using BethanyPieShop.InventoryMnagement.Domain.General;
+using BethanyPieShop.InventoryMnagement.Domain.ProductManagement;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace BethanyPieShop.InventoryManagement.db
 {
@@ -64,6 +67,38 @@ namespace BethanyPieShop.InventoryManagement.db
                 // Handle all other exceptions
                 Console.WriteLine($"Unexpected Error: {ex.Message}");
             }
+        }
+
+        public IList<Product> GetAllProducts()
+        {
+            var query = "SELECT ProductID, Name, Description, AmountInStock, Price, CurrencyID, UnitTypeID, ProductTypeID, MaxAmountInStock FROM Product";
+
+            var entities = new List<Product>();
+
+            using (var connection = _connection.GetConnection()) 
+            using (var command = new SqlCommand(query, connection)) 
+            { 
+                connection.Open();
+                using (var reader = command.ExecuteReader()) {
+                    while (reader.Read()) 
+                    {
+                        var productType = reader.GetInt32(7);
+                        var Product = ProductFactory.CreateProduct(productType);
+
+                        Product.Name = reader.GetString(1);
+                        Product.Description = reader.GetString(2);
+                        Product.AmountInStock = reader.GetInt32(3);
+                        Product.Price.ItemPrice = (double)(reader.GetDecimal(4));
+                        Product.Price.Currency = (Currency)reader.GetInt32(5);
+                        Product.UnitType = (UnitType)reader.GetInt32(6);
+                        Product.ProductType = reader.GetInt32(7);
+                        Product.MaxItemInStock = reader.GetInt32(8);
+
+                        entities.Add(Product);
+                    }
+                }
+            }
+            return entities;
         }
     }
 }

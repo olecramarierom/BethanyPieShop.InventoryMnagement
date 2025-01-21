@@ -52,7 +52,7 @@ namespace BethanyPieShop.InventoryMnagement.Domain.ProductManagement
 
         public UnitType UnitType { get; set; }
 
-        public int AmountInStock { get; protected set; }
+        public int AmountInStock { get; set; }
 
         public bool IsBelowStockThreshold { get; protected set; }
 
@@ -67,12 +67,17 @@ namespace BethanyPieShop.InventoryMnagement.Domain.ProductManagement
             }
         }
 
-        public int ProductType { get; }
+        public int ProductType { get; set; }
 
 
         #endregion
 
         #region Constructors
+        public Product(Price price)
+        {
+            Price = price;
+        }
+
         public Product(int id) : this(id, string.Empty)
         {
         }

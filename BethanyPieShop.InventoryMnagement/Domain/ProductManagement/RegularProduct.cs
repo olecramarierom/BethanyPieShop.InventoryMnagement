@@ -13,6 +13,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
         {
         }
 
+        public RegularProduct(Price price) : base(price) { }
+
 
         public override object Clone()
         {

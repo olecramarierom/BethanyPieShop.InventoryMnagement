@@ -35,6 +35,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
         {
             AmountPerBox = amountPerBox;
         }
+
+        public BoxedProduct(Price price) : base(price) { }
         #endregion
 
         #region Methods

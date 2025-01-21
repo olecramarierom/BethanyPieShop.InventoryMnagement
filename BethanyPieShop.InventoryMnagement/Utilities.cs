@@ -576,6 +576,10 @@ namespace BethanyPieShop.InventoryMnagement
         }
         private static void ShowAllProductsOverview()
         {
+            inventory.Clear();
+
+            inventory = (List<Product>)productDbRepository.GetAllProducts();
+
             foreach (var product in inventory)
             {
                 Console.WriteLine(product.DisplayDetailsShort());

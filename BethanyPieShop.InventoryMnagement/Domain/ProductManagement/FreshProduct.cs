@@ -27,6 +27,8 @@ namespace BethanyPieShop.InventoryManagement.Domain.ProductManagement
                             : base(id, name, description, price, unitType, amountInStock, maxAmountInStock, freshProductType)
         {
         }
+
+        public FreshProduct(Price price) : base(price) { }
         #endregion
 
         #region Methods
