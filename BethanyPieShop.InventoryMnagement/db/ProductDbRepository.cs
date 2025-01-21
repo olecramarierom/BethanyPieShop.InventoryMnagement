@@ -87,19 +87,11 @@ namespace BethanyPieShop.InventoryManagement.db
                         while (reader.Read())
                         {
                             var productType = reader.GetInt32(7);
-                            var Product = ProductFactory.CreateProduct(productType);
+                            var product = ProductFactory.CreateProduct(productType);
 
-                            Product.Id = reader.GetInt32(0);
-                            Product.Name = reader.GetString(1);
-                            Product.Description = reader.GetString(2);
-                            Product.AmountInStock = reader.GetInt32(3);
-                            Product.Price.ItemPrice = (double)(reader.GetDecimal(4));
-                            Product.Price.Currency = (Currency)reader.GetInt32(5);
-                            Product.UnitType = (UnitType)reader.GetInt32(6);
-                            Product.ProductType = reader.GetInt32(7);
-                            Product.MaxItemInStock = reader.GetInt32(8);
+                            MapToProduct(reader, product);
 
-                            entities.Add(Product);
+                            entities.Add(product);
                         }
                     }
                 }
@@ -157,15 +149,7 @@ namespace BethanyPieShop.InventoryManagement.db
                                 var productType = reader.GetInt32(7);
                                 product = ProductFactory.CreateProduct(productType);
 
-                                product.Id = reader.GetInt32(0);
-                                product.Name = reader.GetString(1);
-                                product.Description = reader.GetString(2);
-                                product.AmountInStock = reader.GetInt32(3);
-                                product.Price.ItemPrice = (double)(reader.GetDecimal(4));
-                                product.Price.Currency = (Currency)reader.GetInt32(5);
-                                product.UnitType = (UnitType)reader.GetInt32(6);
-                                product.ProductType = reader.GetInt32(7);
-                                product.MaxItemInStock = reader.GetInt32(8);
+                                MapToProduct(reader, product);
                             }
 
                         }
@@ -197,6 +181,21 @@ namespace BethanyPieShop.InventoryManagement.db
                 // Handle all other exceptions
                 Console.WriteLine($"Unexpected Error: {ex.Message}");
             }
+            return product;
+        }
+
+        private Product MapToProduct(SqlDataReader reader, Product product)
+        {
+            product.Id = reader.GetInt32(0);
+            product.Name = reader.GetString(1);
+            product.Description = reader.GetString(2);
+            product.AmountInStock = reader.GetInt32(3);
+            product.Price.ItemPrice = (double)(reader.GetDecimal(4));
+            product.Price.Currency = (Currency)reader.GetInt32(5);
+            product.UnitType = (UnitType)reader.GetInt32(6);
+            product.ProductType = reader.GetInt32(7);
+            product.MaxItemInStock = reader.GetInt32(8);
+
             return product;
         }
     }

@@ -415,12 +415,16 @@ namespace BethanyPieShop.InventoryMnagement
             Console.WriteLine("Enter the description: ");
             string description = Console.ReadLine() ?? string.Empty;
 
-            if (productType == 1)
-            {
-                ShowAllUnitTypes();
-                Console.WriteLine("Select the unit type: ");
-                unitType = (UnitType)Enum.Parse(typeof(UnitType), Console.ReadLine() ?? "1");
-            }
+            ShowAllUnitTypes();
+            Console.WriteLine("Select the unit type: ");
+            unitType = (UnitType)Enum.Parse(typeof(UnitType), Console.ReadLine() ?? "1");
+
+            //if (productType == 1)
+            //{
+            //    ShowAllUnitTypes();
+            //    Console.WriteLine("Select the unit type: ");
+            //    unitType = (UnitType)Enum.Parse(typeof(UnitType), Console.ReadLine() ?? "1");
+            //}
 
             Console.WriteLine("Enter the number of items in stock for this product: ");
             int itemInStock = int.Parse(Console.ReadLine() ?? "0");
