@@ -4,15 +4,17 @@ using BethanyPieShop.InventoryManagement.Domain.ProductManagement;
 using BethanyPieShop.InventoryMnagement.Domain.General;
 using BethanyPieShop.InventoryMnagement.Domain.OrderManagement;
 using BethanyPieShop.InventoryMnagement.Domain.ProductManagement;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BethanyPieShop.InventoryMnagement
 {
     internal class Utilities
     {
+
         private static List<Product> inventory = new();
         private static List<Order> orders = new();
-        private static ProductDbRepository productDbRepository = new();
+        private static ProductDbRepository productDbRepository = new(ConfigurationBuilder());
 
 
         internal static void InitializeStock()
@@ -376,6 +378,7 @@ namespace BethanyPieShop.InventoryMnagement
 
         private static void ShowCreateNewProduct()
         {
+
             UnitType unitType = UnitType.PerItem;
 
             Console.WriteLine("What type of product do you want to create?");
@@ -553,7 +556,8 @@ namespace BethanyPieShop.InventoryMnagement
             if (int.TryParse(Console.ReadLine(), out selectedProductId))
             {
 
-                Product? selectedProduct =  productDbRepository.GetProductById(selectedProductId);// inventory.Where(p => p.Id == int.Parse(selectedProductId)).FirstOrDefault();
+                Product? selectedProduct =  productDbRepository.GetProductById(selectedProductId);
+                // inventory.Where(p => p.Id == int.Parse(selectedProductId)).FirstOrDefault();
 
                 if (selectedProduct != null)
                 {
@@ -604,6 +608,20 @@ namespace BethanyPieShop.InventoryMnagement
                 Console.WriteLine(product.DisplayDetailsShort());
                 Console.WriteLine();
             }
+        }
+
+        private static IConfiguration ConfigurationBuilder()
+        {
+            string currentPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            string rootPath = Directory.GetParent(currentPath)?.Parent?.Parent?.Parent?.FullName;
+
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(rootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            return configuration;
         }
     }
 }

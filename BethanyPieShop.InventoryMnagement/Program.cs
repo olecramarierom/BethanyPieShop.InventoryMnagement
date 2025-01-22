@@ -5,7 +5,7 @@ using BethanyPieShop.InventoryMnagement;
 
 PrintWelcome();
 
-Utilities.InitializeStock();
+//Utilities.InitializeStock();
 
 Utilities.ShowMainMenu();
 

@@ -2,20 +2,22 @@
 using BethanyPieShop.InventoryMnagement.Domain.General;
 using BethanyPieShop.InventoryMnagement.Domain.ProductManagement;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace BethanyPieShop.InventoryManagement.db
 {
     public class ProductDbRepository : IRepository<Product>
     {
-
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
         private readonly DatabaseConnection _connection;
-        private readonly string connectionString = "Server=localhost,1433;Database=BethanyPieShop;User Id=SA;Password=YourPassword123;Encrypt=False;";
 
-
-        public ProductDbRepository()
+        public ProductDbRepository(IConfiguration configuration)
         {
-            _connection = new DatabaseConnection(connectionString);
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connection = new DatabaseConnection(_connectionString);
         }
 
         public void AddProduct(Product entity)
@@ -131,7 +133,7 @@ namespace BethanyPieShop.InventoryManagement.db
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     string query = "SELECT ProductID, Name, Description, AmountInStock, Price, CurrencyID, UnitTypeID, ProductTypeID, MaxAmountInStock FROM Product WHERE ProductID = @Id ";
 
