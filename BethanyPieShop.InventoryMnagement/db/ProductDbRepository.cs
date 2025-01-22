@@ -10,7 +10,7 @@ namespace BethanyPieShop.InventoryManagement.db
     public class ProductDbRepository : IRepository<Product>
     {
         private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        private readonly string? _connectionString;
         private readonly DatabaseConnection _connection;
 
         public ProductDbRepository(IConfiguration configuration)

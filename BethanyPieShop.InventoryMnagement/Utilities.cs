@@ -614,7 +614,7 @@ namespace BethanyPieShop.InventoryMnagement
         {
             string currentPath = AppDomain.CurrentDomain.BaseDirectory;
 
-            string rootPath = Directory.GetParent(currentPath)?.Parent?.Parent?.Parent?.FullName;
+            string? rootPath = Directory.GetParent(currentPath)?.Parent?.Parent?.Parent?.FullName;
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(rootPath)
