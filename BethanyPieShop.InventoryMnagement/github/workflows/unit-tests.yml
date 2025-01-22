@@ -3,10 +3,10 @@
 on:
   push:
     branches:
-      - main # Adjust the branch to your default branch or where merges happen
+      - master # Adjust the branch to your default branch or where merges happen
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   test:
